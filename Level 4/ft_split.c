@@ -1,49 +1,47 @@
 #include <stdlib.h>
-
-char *ft_strncpy(char *s1, char *s2, int n)
-{
-	int i = -1;
-
-	while (++i < n && s2[i])
-		s1[i] = s2[i];
-	s1[i] = '\0';
-	return (s1);
-}
+#include <stdio.h>
 
 char	**ft_split(char *str)
 {
-	int i;
-	int j = 0;
-	int k = 0;
-	
-	char **out = malloc(1024);
+	int		i;
+	int		row;
+	int		column;
+	char	**split;
+
 	i = 0;
-	
+	row = 0;
+	if (!(split = (char **)malloc(sizeof(char *) * 1024)))
+		return (NULL);
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
+		i++;
 	while (str[i])
 	{
-		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+		column = 0;
+		if (!(split[row] = (char *)malloc(sizeof(char) * 4096)))
+			return (NULL);
+		while (str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+			split[row][column++] = str[i++];
+		while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
 			i++;
-		j = i;
-		while (str[i] && (str[i] != ' ' && str[i] != '\t' && str[i] != '\n'))
-			i++;
-		if (i > j)
-		{
-			out[k] = (char *)malloc(sizeof(char) * (i - j + 1));
-			ft_strncpy(out[k++], &str[j], i - j);
-		}
+		split[row][column] = '\0';
+		row++;
 	}
-	out[k] = NULL;
-	return (out);
+	split[row] = NULL;
+	return (split);
 }
 
-#include <stdio.h>. 
+#include <stdio.h>
 
-int main()
+int	main(void)
 {
-    char **split = ft_split("Al Ain Diary");
-    while(*split)
-    {
-        printf("%s\n", *split++);
-    }
-    free(*split);
+	int		i;
+	char	**tab;
+
+	i = 0;
+	tab = ft_split("    The prophecy i s 	true lol 		   ici");
+	while (i < 7)
+	{
+		printf("String %d : %s\n", i, tab[i]);
+		i++;
+	}
 }
